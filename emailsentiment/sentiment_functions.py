@@ -1,5 +1,3 @@
-import sys
-
 import pickle
 from keras_preprocessing.sequence import pad_sequences
 import re
@@ -213,10 +211,10 @@ def rule_engine(email):
 
 def get_sentiment(email):
 
-    with open('emailsentiment/tokenizer.pickle', 'rb') as handle:
+    with open('./emailsentiment/tokenizer.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
 
-    filename = 'emailsentiment/finalized_model.sav'
+    filename = './emailsentiment/finalized_model.sav'
     loaded_model = pickle.load(open(filename, 'rb'))
 
     cleaned_email = get_email_case(email)
@@ -243,5 +241,5 @@ def get_sentiment(email):
             return "Not interested"
 
 
-print(get_sentiment("i am not interested"))
+# print(get_sentiment("i am not interested"))
 
