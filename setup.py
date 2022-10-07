@@ -9,5 +9,5 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url='https://github.com/shail-1812/emailsentiment.git',
     packages=['emailsentiment'],
-    install_requires=['kera_preprocessing', 'spacy', 'nlppreprocess', 'pickle', 're'],
+    install_requires=['keras_preprocessing', 'spacy', 'nlppreprocess', 'pickle', 're'],
 )
