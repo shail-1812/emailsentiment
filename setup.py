@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='emailsentiment',
-    version='0.0.2',
+    version='0.0.3',
     author='Shail Patel',
     author_email='shailpatel1812@gmail.com',
     description='Sentiment analysis on emails',
