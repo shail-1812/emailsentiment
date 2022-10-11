@@ -241,5 +241,4 @@ def get_sentiment(email):
             return "Not interested"
 
 
-print(get_sentiment("i am not interested"))
 
