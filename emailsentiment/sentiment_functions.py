@@ -1,9 +1,14 @@
+from crypt import methods
 import pickle
+from turtle import title
+from urllib import request
 from keras_preprocessing.sequence import pad_sequences
 import re
 import spacy
 from nlppreprocess import NLP
+from flask import Flask, render_template, request
 
+app = Flask(__name__)
 
 split_strings_days = ["On Mon", "On Tue", "On Wed", "On Thur", "On Fri", "On Sat", "On Sun"]
 split_strings_months = ["On Jan", "On Feb", "On Mar", "On Apr", "On May", "On June", "On July", "On Aug", "On Sept", "On Oct", "On Nov", "On Dec"]
@@ -211,10 +216,10 @@ def rule_engine(email):
 
 def get_sentiment(email):
 
-    with open('tokenizer.pickle', 'rb') as handle:
+    with open('emailsentiment/tokenizer.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
 
-    filename = 'finalized_model.sav'
+    filename = 'emailsentiment/finalized_model.sav'
     loaded_model = pickle.load(open(filename, 'rb'))
 
     cleaned_email = get_email_case(email)
@@ -241,4 +246,18 @@ def get_sentiment(email):
             return "Not interested"
 
 
+@app.route("/")
+def hello():
+    return render_template('getemail.html')
 
+
+
+@app.route("/", methods=['POST'])
+def get_email():
+    text = request.form['emailthread']
+    sentiment = get_sentiment(text)
+    return sentiment
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
