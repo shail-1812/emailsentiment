@@ -7,8 +7,11 @@ import re
 import spacy
 from nlppreprocess import NLP
 from flask import Flask, render_template, request
+import os
 
+port = int(os.environ.get('PORT', 5000))
 app = Flask(__name__)
+app.run(host='0.0.0.0', port=port)
 
 split_strings_days = ["On Mon", "On Tue", "On Wed", "On Thur", "On Fri", "On Sat", "On Sun"]
 split_strings_months = ["On Jan", "On Feb", "On Mar", "On Apr", "On May", "On June", "On July", "On Aug", "On Sept", "On Oct", "On Nov", "On Dec"]
