@@ -4,6 +4,20 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+click = "==8.0.3"
+colorama = "==0.4.4"
+flask = "==2.0.2"
+itsdangerous = "==2.0.1"
+jinja2 = "==3.0.3"
+markupsafe = "==2.0.1"
+werkzeug = "==2.0.2"
+gunicorn = "==20.1.0"
+keras-preprocessing = "*"
+spacy = "*"
+nlppreprocess = "*"
+nltk = "*"
+keras = "*"
+tensorflow = "*"
 
 [dev-packages]
 

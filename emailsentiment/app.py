@@ -9,6 +9,7 @@ from nlppreprocess import NLP
 from flask import Flask, render_template, request
 import os
 
+
 app = Flask(__name__)
 
 split_strings_days = ["On Mon", "On Tue", "On Wed", "On Thur", "On Fri", "On Sat", "On Sun"]
@@ -217,10 +218,10 @@ def rule_engine(email):
 
 def get_sentiment(email):
 
-    with open('emailsentiment/tokenizer.pickle', 'rb') as handle:
+    with open('tokenizer.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
 
-    filename = 'emailsentiment/finalized_model.sav'
+    filename = 'finalized_model.sav'
     loaded_model = pickle.load(open(filename, 'rb'))
 
     cleaned_email = get_email_case(email)
@@ -262,4 +263,5 @@ def get_email():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5002))
+    app.run(debug=True, host='0.0.0.0', port=port)
