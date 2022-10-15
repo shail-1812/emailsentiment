@@ -18,6 +18,7 @@ nlppreprocess = "*"
 nltk = "*"
 keras = "*"
 tensorflow = "*"
+uvicorn = "*"
 
 [dev-packages]
 
