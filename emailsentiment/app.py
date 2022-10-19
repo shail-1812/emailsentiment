@@ -248,20 +248,26 @@ def get_sentiment(email):
             return "Not interested"
 
 
-@app.route("/")
-def hello():
-    return render_template('getemail.html')
-    # return "hello there"
+with open('file.txt', 'r') as file:
+    data = file.read().replace('\n', '')
+    print(get_sentiment(data))
 
 
 
-@app.route("/", methods=['POST'])
-def get_email():
-    text = request.form['emailthread']
-    sentiment = get_sentiment(text)
-    return sentiment
+# @app.route("/")
+# def hello():
+#     return render_template('getemail.html')
+#     # return "hello there"
 
 
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5002))
-    app.run(debug=True, host='0.0.0.0', port=port)
+
+# @app.route("/", methods=['POST'])
+# def get_email():
+#     text = request.form['emailthread']
+#     sentiment = get_sentiment(text)
+#     return sentiment
+
+
+# if __name__ == '__main__':
+#     port = int(os.environ.get('PORT', 5002))
+#     app.run(debug=True, host='0.0.0.0', port=port)

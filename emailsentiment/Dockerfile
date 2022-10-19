@@ -1,4 +1,4 @@
-FROM python:3.9.14-buster
+FROM python
 
 COPY ./requirements.txt /app/requirements.txt
 # RUN pip install keras_preprocessing  
@@ -33,7 +33,7 @@ RUN python -m spacy download en
 # COPY app.py ./app.py
 
 COPY . /app
-ENTRYPOINT [ "python" ]
+# ENTRYPOINT [ "python" ]
 
-CMD ["app.py" ]
+CMD ["python", "file.txt", "app.py"]
 
