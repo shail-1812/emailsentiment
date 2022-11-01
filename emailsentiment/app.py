@@ -1,16 +1,17 @@
-from crypt import methods
+# from crypt import methods
 import pickle
-from turtle import title
-from urllib import request
+# from turtle import title
+# from urllib import request
 from keras_preprocessing.sequence import pad_sequences
 import re
 import spacy
 from nlppreprocess import NLP
-from flask import Flask, render_template, request
-import os
+# from flask import Flask, render_template, request
+# import os
+# import json
 
 
-app = Flask(__name__)
+# app = Flask(__name__)
 
 split_strings_days = ["On Mon", "On Tue", "On Wed", "On Thur", "On Fri", "On Sat", "On Sun"]
 split_strings_months = ["On Jan", "On Feb", "On Mar", "On Apr", "On May", "On June", "On July", "On Aug", "On Sept", "On Oct", "On Nov", "On Dec"]
@@ -248,9 +249,19 @@ def get_sentiment(email):
             return "Not interested"
 
 
-with open('file.txt', 'r') as file:
-    data = file.read().replace('\n', '')
-    print(get_sentiment(data))
+f = open('test.json', "r")
+
+data = f.read()
+
+print(get_sentiment(data))
+
+# Iterating through the json
+# list
+# for i in data['Emails']:
+# 	print(i)
+
+# # Closing file
+# f.close()
 
 
 

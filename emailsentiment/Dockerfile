@@ -1,4 +1,6 @@
-FROM python
+# syntax=docker/dockerfile:1
+
+FROM python:3.7-slim-buster
 
 COPY ./requirements.txt /app/requirements.txt
 # RUN pip install keras_preprocessing  
@@ -23,6 +25,7 @@ RUN pip install -r requirements.txt
 #     && pip3 install -U spacy==${SPACY_VERSION} \
 #     && python3 -m spacy download en \
 #     && python3 -m spacy download xx
+# RUN pip install tensorflow tensorflow-gpu 
 RUN pip install spacy-download
 RUN python -m spacy download en
 
