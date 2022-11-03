@@ -19,6 +19,10 @@ nltk = "*"
 keras = "*"
 tensorflow = "*"
 boto3 = "*"
+pandas = "*"
+opensearch-py = "*"
+elasticsearch-dsl = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

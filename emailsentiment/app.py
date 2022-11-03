@@ -9,6 +9,7 @@ from nlppreprocess import NLP
 # from flask import Flask, render_template, request
 # import os
 # import json
+import os
 
 
 # app = Flask(__name__)
@@ -249,11 +250,15 @@ def get_sentiment(email):
             return "Not interested"
 
 
-f = open('test.json', "r")
+# file_path = os.environ['FILE_PATH']
+# print(file_path)
+file_path = "test.json" 
+f = open(file_path, "r")
 
 data = f.read()
+data = data.split("\"email\":")
+print(get_sentiment(data[1]))
 
-print(get_sentiment(data))
 
 # Iterating through the json
 # list
