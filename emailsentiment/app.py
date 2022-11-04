@@ -249,15 +249,17 @@ def get_sentiment(email):
         else:
             return "Not interested"
 
+def handler(event, context):
+    return get_sentiment("hi there")
 
 # file_path = os.environ['FILE_PATH']
 # print(file_path)
-file_path = "test.json" 
-f = open(file_path, "r")
+# file_path = "test.json" 
+# f = open(file_path, "r")
 
-data = f.read()
-data = data.split("\"email\":")
-print(get_sentiment(data[1]))
+# data = f.read()
+# data = data.split("\"email\":")
+# print(get_sentiment(data[1]))
 
 
 # Iterating through the json
