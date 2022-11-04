@@ -15,11 +15,11 @@ FROM public.ecr.aws/lambda/python:3.9
 # CMD ["python", "./app.py"]
 
 WORKDIR /app
-COPY app.py /app/app.py ${LAMBDA_TASK_ROOT}
-COPY requirements.txt /app/requirements.txt
+COPY app.py /app ${LAMBDA_TASK_ROOT}
+COPY requirements.txt /app
 RUN  pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
-COPY tokenizer.pickle /app/tokenizer.pickle
-COPY finalized_model.sav /app/finalized_model.sav
+COPY tokenizer.pickle /app
+COPY finalized_model.sav /app
 CMD ["app.handler"]
 
 
