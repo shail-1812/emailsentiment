@@ -6,16 +6,94 @@ from keras_preprocessing.sequence import pad_sequences
 import re
 import spacy
 from nlppreprocess import NLP
-# from flask import Flask, render_template, request
-# import os
-# import json
+import boto3
 import os
-
-
-# app = Flask(__name__)
+import json
 
 split_strings_days = ["On Mon", "On Tue", "On Wed", "On Thur", "On Fri", "On Sat", "On Sun"]
 split_strings_months = ["On Jan", "On Feb", "On Mar", "On Apr", "On May", "On June", "On July", "On Aug", "On Sept", "On Oct", "On Nov", "On Dec"]
+
+# class S3Manager():
+# 	def __init__(self):
+# 		# Check if the current environent is local
+# 		if (os.environ.get("DEBUG").upper() == 'TRUE'):
+# 			self.s3 = boto3.resource(
+# 				's3',
+# 				endpoint_url=f'http://localhost:{os.environ.get("LOCAL_S3_PORT")}',
+# 				aws_access_key_id='S3RVER',
+# 				aws_secret_access_key='S3RVER'
+# 			)
+# 		else:
+# 			# save the resource as a class variable
+# 			self.s3 = boto3.resource('s3')
+
+# 	def create_bucket(self, bucket_name):
+# 		self.s3.create_bucket(
+# 			Bucket=bucket_name
+# 		)
+
+# 	def put(self, body, bucket_name, key):
+# 		"""
+# 		This will put an object in s3
+# 		"""
+# 		self.s3.meta.client.put_object(
+# 			Body=body,
+# 			Bucket=bucket_name,
+# 			Key=key
+# 		)
+
+# 	def download_from_bucket(self, bucket_name, key, download_path):
+# 		"""
+# 		This method will download the a file from s3 into the download_path
+# 		param: bucket_name: name of the bucket to download from,
+# 		param: key: the key to the file
+# 		parma: download_path: the path that the file will be downloaded to
+# 		"""
+# 		# Get the bucket from the s3 resource
+# 		bucket = self.s3.Bucket(bucket_name)
+
+# 		# download the file
+# 		bucket.download_file(key, download_path)
+
+# 	def download_file(self, bucket_name, key):
+# 		"""
+# 		This method will get the file from s3 and write to a io buffer and then parse it as string and return it
+# 		"""
+# 		# Create an io buffer
+# 		bytes_buffer = io.BytesIO()
+# 		# Download the file into this buffer
+# 		self.s3.meta.client.download_fileobj(
+# 			Bucket=bucket_name,
+# 			Key=key,
+# 			Fileobj=bytes_buffer
+# 		)
+# 		return bytes_buffer.getvalue().decode()
+
+# 	def delete_from_bucket(self, bucket_name, key):
+# 		"""
+# 		This method deletes the given object from the bucket
+# 		"""
+# 		self.s3.meta.client.delete_object(
+# 			Bucket=bucket_name,
+# 			Key=key
+# 		)
+# 	def get_download_url(self, bucket_name, key):
+# 		"""
+# 		This method generates the download url for the given key and bucket.
+# 			Replace this will generate_presigned_url() method to get an authenticated url
+# 		"""
+# 		if(os.environ.get("DEBUG").upper() == "TRUE"):
+# 			return f'http://localhost:{os.environ.get("LOCAL_S3_PORT")}/{bucket_name}/{key}'
+# 		else:
+# 			return f"https://s3-{self.s3.meta.client.get_bucket_location(Bucket=bucket_name)['LocationConstraint']}.amazonaws.com/{bucket_name}/{key}"
+
+# 	def check_if_file_exists(self, bucket_name, key):
+# 		try:
+# 			response = self.s3.meta.client.head_object(Bucket=bucket_name, Key=key)
+# 			print(response)
+# 			return True
+# 		except:
+# 			return False
 
 
 nlp = NLP(
@@ -249,8 +327,46 @@ def get_sentiment(email):
         else:
             return "Not interested"
 
+
+def download_s3_folder(bucket_name, s3_folder, local_dir=None):
+    s3 = boto3.resource('s3')
+    bucket = s3.Bucket(bucket_name)
+    for obj in bucket.objects.filter(Prefix=s3_folder):
+        target = obj.key if local_dir is None \
+            else os.path.join(local_dir, os.path.relpath(obj.key, s3_folder))
+        if not os.path.exists(os.path.dirname(target)):
+            os.makedirs(os.path.dirname(target))
+        if obj.key[-1] == '/':
+            continue
+        bucket.download_file(obj.key, target)
+
+
 def handler(event, context):
-    return get_sentiment("hi there")
+    download_s3_folder("email-sentiment-uat","b9210c72-5b52-11ed-a0f5-ed579582102d","temp")
+    directory = "temp"
+
+    for filename in os.listdir(directory):
+        email_dictionary = {}
+        filename = os.path.join(directory, filename)
+        f = open(filename)
+        data = json.load(f)
+        if "reply.body" in data:
+            email = data["reply.body"]
+            
+            sentiment = get_sentiment(email)
+            
+            email_dictionary["id"] = data["id"]
+            email_dictionary["sentiment"] = sentiment
+            email_dictionary["email"] = email
+            
+            json_object = json.dumps(email_dictionary, indent=4)
+            
+            file_name = data["id"]
+            
+            with open("temp/output"+file_name, "w") as outfile:
+                outfile.write(json_object)
+        else:
+            pass
 
 # file_path = os.environ['FILE_PATH']
 # print(file_path)

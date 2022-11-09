@@ -12,3 +12,4 @@ nlppreprocess
 nltk
 keras
 tensorflow
+boto3
