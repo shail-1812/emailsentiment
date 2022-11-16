@@ -1,7 +1,4 @@
-# from crypt import methods
 import pickle
-# from turtle import title
-# from urllib import request
 from keras_preprocessing.sequence import pad_sequences
 import re
 import spacy
@@ -13,88 +10,8 @@ import json
 split_strings_days = ["On Mon", "On Tue", "On Wed", "On Thur", "On Fri", "On Sat", "On Sun"]
 split_strings_months = ["On Jan", "On Feb", "On Mar", "On Apr", "On May", "On June", "On July", "On Aug", "On Sept", "On Oct", "On Nov", "On Dec"]
 
-# class S3Manager():
-# 	def __init__(self):
-# 		# Check if the current environent is local
-# 		if (os.environ.get("DEBUG").upper() == 'TRUE'):
-# 			self.s3 = boto3.resource(
-# 				's3',
-# 				endpoint_url=f'http://localhost:{os.environ.get("LOCAL_S3_PORT")}',
-# 				aws_access_key_id='S3RVER',
-# 				aws_secret_access_key='S3RVER'
-# 			)
-# 		else:
-# 			# save the resource as a class variable
-# 			self.s3 = boto3.resource('s3')
-
-# 	def create_bucket(self, bucket_name):
-# 		self.s3.create_bucket(
-# 			Bucket=bucket_name
-# 		)
-
-# 	def put(self, body, bucket_name, key):
-# 		"""
-# 		This will put an object in s3
-# 		"""
-# 		self.s3.meta.client.put_object(
-# 			Body=body,
-# 			Bucket=bucket_name,
-# 			Key=key
-# 		)
-
-# 	def download_from_bucket(self, bucket_name, key, download_path):
-# 		"""
-# 		This method will download the a file from s3 into the download_path
-# 		param: bucket_name: name of the bucket to download from,
-# 		param: key: the key to the file
-# 		parma: download_path: the path that the file will be downloaded to
-# 		"""
-# 		# Get the bucket from the s3 resource
-# 		bucket = self.s3.Bucket(bucket_name)
-
-# 		# download the file
-# 		bucket.download_file(key, download_path)
-
-# 	def download_file(self, bucket_name, key):
-# 		"""
-# 		This method will get the file from s3 and write to a io buffer and then parse it as string and return it
-# 		"""
-# 		# Create an io buffer
-# 		bytes_buffer = io.BytesIO()
-# 		# Download the file into this buffer
-# 		self.s3.meta.client.download_fileobj(
-# 			Bucket=bucket_name,
-# 			Key=key,
-# 			Fileobj=bytes_buffer
-# 		)
-# 		return bytes_buffer.getvalue().decode()
-
-# 	def delete_from_bucket(self, bucket_name, key):
-# 		"""
-# 		This method deletes the given object from the bucket
-# 		"""
-# 		self.s3.meta.client.delete_object(
-# 			Bucket=bucket_name,
-# 			Key=key
-# 		)
-# 	def get_download_url(self, bucket_name, key):
-# 		"""
-# 		This method generates the download url for the given key and bucket.
-# 			Replace this will generate_presigned_url() method to get an authenticated url
-# 		"""
-# 		if(os.environ.get("DEBUG").upper() == "TRUE"):
-# 			return f'http://localhost:{os.environ.get("LOCAL_S3_PORT")}/{bucket_name}/{key}'
-# 		else:
-# 			return f"https://s3-{self.s3.meta.client.get_bucket_location(Bucket=bucket_name)['LocationConstraint']}.amazonaws.com/{bucket_name}/{key}"
-
-# 	def check_if_file_exists(self, bucket_name, key):
-# 		try:
-# 			response = self.s3.meta.client.head_object(Bucket=bucket_name, Key=key)
-# 			print(response)
-# 			return True
-# 		except:
-# 			return False
-
+# On Mon: text
+# On Jan: text
 
 nlp = NLP(
        replace_words=True,
