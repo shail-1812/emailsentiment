@@ -257,11 +257,48 @@ def download_s3_folder(bucket_name, s3_folder, local_dir=None):
             continue
         bucket.download_file(obj.key, target)
 
+# def test():
+#     def obj_dict(obj):
+#         return obj.__dict__
+#     directory = "temp"
+#     email_dictionary_list = []
+#     for filename in os.listdir(directory):
+#         i += 1
+#         email_dictionary = {}
+#         filename = os.path.join(directory, filename)
+#         f = open(filename)
+#         data = json.load(f)
+#         if "reply.body" in data:
+#             email = data["reply.body"]
+            
+#             sentiment = get_sentiment(email)
+            
+#             email_dictionary["id"] = data["id"]
+#             email_dictionary["sentiment"] = sentiment
+#             email_dictionary["email"] = email
+#             email_dictionary_list.append(email_dictionary)
+#             # json_object = json.dumps(email_dictionary, indent=4)
+            
+#             # file_name = data["id"]
+            
+#             # with open("temp/output"+file_name, "w") as outfile:
+#             #     outfile.write(json_object)
+#         else:
+#             pass
+        
+#     json_object = json.dumps(email_dictionary_list, indent=4, default=obj_dict)
+#     file_name = "output"
+#     print(email_dictionary_list)
+#     with open("temp/"+file_name, "w") as outfile:
+#         outfile.write(json_object)
+
 
 def handler(event, context):
+    def obj_dict(obj):
+        return obj.__dict__
     download_s3_folder("email-sentiment-uat","b9210c72-5b52-11ed-a0f5-ed579582102d","temp")
     directory = "temp"
-
+    email_dictionary_list = []
     for filename in os.listdir(directory):
         email_dictionary = {}
         filename = os.path.join(directory, filename)
@@ -274,16 +311,22 @@ def handler(event, context):
             
             email_dictionary["id"] = data["id"]
             email_dictionary["sentiment"] = sentiment
-            email_dictionary["email"] = email
+            email_dictionary_list.append(email_dictionary)
+
+            # json_object = json.dumps(email_dictionary, indent=4)
             
-            json_object = json.dumps(email_dictionary, indent=4)
+            # file_name = data["id"]
             
-            file_name = data["id"]
-            
-            with open("temp/output"+file_name, "w") as outfile:
-                outfile.write(json_object)
+            # with open("temp/output"+file_name, "w") as outfile:
+            #     outfile.write(json_object)
         else:
             pass
+        
+    json_object = json.dumps(email_dictionary_list, indent=4, default=obj_dict)
+    file_name = "output"
+            
+    with open("temp/"+file_name, "w") as outfile:
+        outfile.write(json_object)
 
 # file_path = os.environ['FILE_PATH']
 # print(file_path)
