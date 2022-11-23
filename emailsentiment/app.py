@@ -256,42 +256,15 @@ def download_s3_folder(bucket_name, s3_folder, local_dir=None):
         if obj.key[-1] == '/':
             continue
         bucket.download_file(obj.key, target)
-
-# def test():
-#     def obj_dict(obj):
-#         return obj.__dict__
-#     directory = "temp"
-#     email_dictionary_list = []
-#     for filename in os.listdir(directory):
-#         i += 1
-#         email_dictionary = {}
-#         filename = os.path.join(directory, filename)
-#         f = open(filename)
-#         data = json.load(f)
-#         if "reply.body" in data:
-#             email = data["reply.body"]
-            
-#             sentiment = get_sentiment(email)
-            
-#             email_dictionary["id"] = data["id"]
-#             email_dictionary["sentiment"] = sentiment
-#             email_dictionary["email"] = email
-#             email_dictionary_list.append(email_dictionary)
-#             # json_object = json.dumps(email_dictionary, indent=4)
-            
-#             # file_name = data["id"]
-            
-#             # with open("temp/output"+file_name, "w") as outfile:
-#             #     outfile.write(json_object)
-#         else:
-#             pass
         
-#     json_object = json.dumps(email_dictionary_list, indent=4, default=obj_dict)
-#     file_name = "output"
-#     print(email_dictionary_list)
-#     with open("temp/"+file_name, "w") as outfile:
-#         outfile.write(json_object)
-
+def upload_file():
+    s3 = boto3.resource('s3')
+    file_name = "temp/output.json" 
+    s3.upload_file(
+    Filename=file_name,
+    Bucket="email-sentiment-uat",
+    Key="output.json"
+    )
 
 def handler(event, context):
     def obj_dict(obj):
@@ -312,13 +285,6 @@ def handler(event, context):
             email_dictionary["id"] = data["id"]
             email_dictionary["sentiment"] = sentiment
             email_dictionary_list.append(email_dictionary)
-
-            # json_object = json.dumps(email_dictionary, indent=4)
-            
-            # file_name = data["id"]
-            
-            # with open("temp/output"+file_name, "w") as outfile:
-            #     outfile.write(json_object)
         else:
             pass
         
@@ -327,6 +293,8 @@ def handler(event, context):
             
     with open("temp/"+file_name, "w") as outfile:
         outfile.write(json_object)
+    
+    upload_file()
 
 # file_path = os.environ['FILE_PATH']
 # print(file_path)
