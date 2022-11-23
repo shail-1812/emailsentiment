@@ -1,0 +1,21 @@
+name: CI- Image Deployment
+
+on:
+  workflow_dispatch
+
+jobs:
+  Deploy-Image:
+    name: Deploy ECR Image
+    runs-on: ubuntu-latest
+    steps:  
+    - uses: actions/checkout@v2
+    - name: Build and upload image to ecr
+      uses: appleboy/docker-ecr-action@master
+      with:
+        access_key: ${{ secrets.AWS_ACCESS_KEY_ID_RESEARCH }}
+        secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY_RESEARCH }}
+        region: us-east-1
+        repo: test-custom-sagemaker
+        cache_from: "${{ secrets.AWS_ACCOUNT_ID_RESEARCH }}.dkr.ecr.us-east-1.amazonaws.com/<repo-name>"
+        tags: "latest"
+        dockerfile: ./Dockerfile
